@@ -106,8 +106,43 @@ const elements = {
   velocity: document.getElementById("velocity"),
   updatedAt: document.getElementById("updated-at"),
   statusText: document.getElementById("status-text"),
-  statusDot: document.getElementById("status-dot"),
+  statusDot: document.getElementById("status-dot"), 
+  followButton: document.getElementById("follow-button"),
+  followButtonText: document.getElementById("follow-button-text"),
+  followIndicator: document.getElementById("follow-indicator"),
 };
+
+let followEnabled = true;
+
+function updateFollowButton() {
+  elements.followButtonText.textContent = followEnabled
+    ? "Following ISS"
+    : "Follow ISS";
+
+  elements.followButton.classList.toggle("active", followEnabled);
+
+  elements.followButton.setAttribute(
+    "aria-pressed",
+    String(followEnabled)
+  );
+
+  elements.followIndicator.classList.toggle("active", followEnabled);
+}
+
+elements.followButton.addEventListener("click", () => {
+  followEnabled = !followEnabled;
+
+  updateFollowButton();
+
+  if (followEnabled) {
+    map.panTo(issMarker.getLatLng(), {
+      animate: true,
+      duration: 0.8,
+    });
+  }
+});
+
+updateFollowButton();
 
 function setStatus(status) {
   elements.statusText.textContent = status;
@@ -161,6 +196,14 @@ async function updateISS() {
 
     // Update the marker's geographical position.
     issMarker.setLatLng([latitude, longitude]);
+
+    
+    if (followEnabled) {
+        map.panTo([latitude, longitude], {
+        animate: true,
+        duration: 0.8,
+      });
+    }
 
     // Update the dashboard.
     elements.latitude.textContent = `${formatNumber(latitude, 4)}°`;
