@@ -202,3 +202,154 @@ footer {
     opacity: 0;
   }
 }
+
+
+/* Follow ISS controls */
+
+.map-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.follow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 10px 15px;
+  border: 1px solid #334155;
+  border-radius: 999px;
+
+  background: #172338;
+  color: #cbd5e1;
+
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.follow-button:hover {
+  background: #22334b;
+  border-color: #64748b;
+}
+
+.follow-button:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
+}
+
+.follow-button.active {
+  background: #123047;
+  border-color: #256b8c;
+  color: #bae6fd;
+}
+
+.follow-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.follow-indicator.active {
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+@media (max-width: 800px) {
+  .map-controls {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
+
+/* Orbital statistics panel */
+
+.stats-panel {
+  margin-top: 24px;
+  padding: 24px;
+
+  background: #0f172a;
+  border: 1px solid #243247;
+  border-radius: 16px;
+
+  color: #e2e8f0;
+}
+
+.stats-heading {
+  margin-bottom: 20px;
+}
+
+.stats-heading h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.stats-heading p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  min-width: 0;
+  padding: 20px;
+
+  background: #162238;
+  border: 1px solid #293950;
+  border-radius: 12px;
+}
+
+.stat-label {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  color: #7dd3fc;
+  font-size: 28px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.stat-description {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .stats-panel {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+}

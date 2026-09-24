@@ -12,17 +12,6 @@ const map = L.map("map", {
   worldCopyJump: true,
 }).setView([20, 0], 2);
 
-
- // Ground-track history: 120 readings = approximately 10 minutes.
-const MAX_TRACK_POINTS = 120;
-
-const trackHistory = [];
-// Leaflet polylines currently displayed on the map.
-let trackLines = [];
-
-const trackTimestamps = [];
-let lastSuccessfulUpdate = null;
-
 // Add the map tiles.
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -107,116 +96,6 @@ const issMarker = L.marker([0, 0], {
 issMarker.bindPopup("International Space Station");
 issMarker.bindPopup("International Space Station");
 
-
-function updateGroundTrack() {
-  // Remove the previous trail layers before redrawing.
-  trackLines.forEach((line) => {
-    map.removeLayer(line);
-  });
-
-  trackLines = [];
-
-  // Split the history into separate segments if the ISS
-  // crosses the antimeridian (+180° / -180° longitude).
-  const segments = [];
-  let currentSegment = [];
-
-  for (let i = 0; i < trackHistory.length; i++) {
-    const point = trackHistory[i];
-
-    if (currentSegment.length > 0) {
-      const previousPoint =
-        currentSegment[currentSegment.length - 1];
-
-      const longitudeDifference =
-        Math.abs(point[1] - previousPoint[1]);
-
-      // A longitude jump greater than 180° indicates a
-      // crossing of the antimeridian.
-      if (longitudeDifference > 180) {
-        if (currentSegment.length >= 2) {
-          segments.push(currentSegment);
-        }
-
-        currentSegment = [];
-      }
-    }
-
-    currentSegment.push(point);
-  }
-
-  // Include the final segment.
-  if (currentSegment.length >= 2) {
-    segments.push(currentSegment);
-  }
-
-  // Draw each segment as its own Leaflet polyline.
-  segments.forEach((segment) => {
-    const line = L.polyline(segment, {
-      color: "#38bdf8",
-      weight: 3,
-      opacity: 0.8,
-      lineCap: "round",
-      lineJoin: "round",
-    }).addTo(map);
-
-    trackLines.push(line);
-  });
-}
-
-
-function formatDuration(milliseconds) {
-  const totalSeconds = Math.max(
-    0,
-    Math.floor(milliseconds / 1000)
-  );
-
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  if (hours > 0) {
-    return `${hours}h ${minutes}m ${seconds}s`;
-  }
-
-  return `${minutes}m ${seconds}s`;
-}
-
-function formatTimeSince(timestamp) {
-  if (timestamp === null) {
-    return "Waiting...";
-  }
-
-  const elapsed = Math.max(0, Date.now() - timestamp);
-
-  if (elapsed < 1000) {
-    return "Just now";
-  }
-
-  return `${formatDuration(elapsed)} ago`;
-}
-
-function updateOrbitalStatistics() {
-  elements.positionsCount.textContent = trackHistory.length;
-
-  if (trackTimestamps.length >= 2) {
-    const firstTimestamp = trackTimestamps[0];
-    const latestTimestamp =
-      trackTimestamps[trackTimestamps.length - 1];
-
-    elements.trailDuration.textContent = formatDuration(
-      latestTimestamp - firstTimestamp
-    );
-  } else if (trackTimestamps.length === 1) {
-    elements.trailDuration.textContent = "0m 0s";
-  } else {
-    elements.trailDuration.textContent = "--";
-  }
-
-  elements.lastSuccess.textContent =
-    formatTimeSince(lastSuccessfulUpdate);
-}
-
 // Prevent overlapping requests.
 let isFetching = false;
 
@@ -231,10 +110,6 @@ const elements = {
   followButton: document.getElementById("follow-button"),
   followButtonText: document.getElementById("follow-button-text"),
   followIndicator: document.getElementById("follow-indicator"),
-  positionsCount: document.getElementById("positions-count"),
-  trailDuration: document.getElementById("trail-duration"),
-  lastSuccess: document.getElementById("last-success"),
-  trackingStatus: document.getElementById("tracking-status"),
 };
 
 let followEnabled = true;
@@ -271,7 +146,6 @@ updateFollowButton();
 
 function setStatus(status) {
   elements.statusText.textContent = status;
-  elements.trackingStatus.textContent = status;
 
   elements.statusDot.classList.remove("online", "offline");
 
@@ -324,27 +198,6 @@ async function updateISS() {
     issMarker.setLatLng([latitude, longitude]);
 
     
-    // Save this successful reading to the ground-track history.
-    trackHistory.push([latitude, longitude]);
-
-    // Record the successful coordinate reading and its timestamp.
-    const recordedAt = Date.now();
-
-    trackHistory.push([latitude, longitude]);
-    trackTimestamps.push(recordedAt);
-
-    lastSuccessfulUpdate = recordedAt;
-
-    // Keep both histories synchronized and bounded.
-    if (trackHistory.length > MAX_TRACK_POINTS) {
-      trackHistory.shift();
-      trackTimestamps.shift();
-    }
-
-    // Refresh the ground track and its statistics.
-    updateGroundTrack();
-    updateOrbitalStatistics();
-    
     if (followEnabled) {
         map.panTo([latitude, longitude], {
         animate: true,
@@ -378,11 +231,6 @@ async function updateISS() {
   }
 }
 
-
- // Fetch once immediately, then poll periodically.
+// Fetch once immediately, then poll periodically.
 updateISS();
-
 setInterval(updateISS, REFRESH_INTERVAL);
-
-// Refresh the elapsed-time display once per second.
-setInterval(updateOrbitalStatistics, 1000);

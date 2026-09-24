@@ -1,0 +1,109 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Track the International Space Station using live orbital data."
+    />
+    <title>ISS Live Tracker</title>
+    <script type="module" crossorigin src="/assets/index-Dz5leAtW.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index--Md1knyJ.css">
+  </head>
+
+  <body>
+    <header class="header">
+      <div>
+        <p class="eyebrow">REAL-TIME SPACE DATA</p>
+        <h1>ISS Live Tracker</h1>
+        <p class="subtitle">
+          Follow the International Space Station around Earth.
+        </p>
+      </div>
+
+      <div class="status">
+        <span id="status-dot" class="status-dot"></span>
+        <span id="status-text">Connecting...</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="stats">
+        <article class="stat-card">
+          <p>Latitude</p>
+          <h2 id="latitude">--</h2>
+        </article>
+
+        <article class="stat-card">
+          <p>Longitude</p>
+          <h2 id="longitude">--</h2>
+        </article>
+
+        <article class="stat-card">
+          <p>Altitude</p>
+          <h2 id="altitude">--</h2>
+        </article>
+
+        <article class="stat-card">
+          <p>Velocity</p>
+          <h2 id="velocity">--</h2>
+        </article>
+      </section>
+
+      <section class="map-panel">
+        <div class="map-heading"> <div> <h2>Orbital Position</h2> <p>Map updates approximately every 5 seconds.</p> </div>
+
+    <div class="map-controls"> 
+  <button id="follow-button" class="follow-button active" type="button" aria-pressed="true" > <span id="follow-indicator" class="follow-indicator"></span> <span id="follow-button-text">Following ISS</span> </button>
+   <span id="updated-at">Waiting for data...</span>
+  </div> 
+</div>
+
+        <div id="map" aria-label="Interactive map showing ISS position"></div>
+
+        
+<section class="stats-panel">
+  <div class="stats-heading">
+    <div>
+      <h2>Orbital Statistics</h2>
+      <p>Live metrics from your recent ISS coordinate history.</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <article class="stat-card">
+      <span class="stat-label">Recorded Positions</span>
+      <strong class="stat-value" id="positions-count">0</strong>
+      <span class="stat-description">Stored coordinate samples</span>
+    </article>
+
+    <article class="stat-card">
+      <span class="stat-label">Trail Duration</span>
+      <strong class="stat-value" id="trail-duration">--</strong>
+      <span class="stat-description">Time covered by the trail</span>
+    </article>
+
+    <article class="stat-card">
+      <span class="stat-label">Last Successful Update</span>
+      <strong class="stat-value" id="last-success">Waiting...</strong>
+      <span class="stat-description">Time since valid telemetry</span>
+    </article>
+
+    <article class="stat-card">
+      <span class="stat-label">Tracking Status</span>
+      <strong class="stat-value" id="tracking-status">Connecting...</strong>
+      <span class="stat-description">API connection state</span>
+    </article>
+  </div>
+</section>
+      </section>
+    </main>
+
+    <footer>
+      <p>ISS Live Tracker · Data provided by Where the ISS at?</p>
+    </footer>
+
+  </body>
+</html>
