@@ -12,6 +12,15 @@ const map = L.map("map", {
   worldCopyJump: true,
 }).setView([20, 0], 2);
 
+
+ // Ground-track history: 120 readings = approximately 10 minutes.
+const MAX_TRACK_POINTS = 120;
+
+const trackHistory = [];
+
+// Leaflet polylines currently displayed on the map.
+let trackLines = [];
+
 // Add the map tiles.
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -95,6 +104,63 @@ const issMarker = L.marker([0, 0], {
 
 issMarker.bindPopup("International Space Station");
 issMarker.bindPopup("International Space Station");
+
+
+function updateGroundTrack() {
+  // Remove the previous trail layers before redrawing.
+  trackLines.forEach((line) => {
+    map.removeLayer(line);
+  });
+
+  trackLines = [];
+
+  // Split the history into separate segments if the ISS
+  // crosses the antimeridian (+180° / -180° longitude).
+  const segments = [];
+  let currentSegment = [];
+
+  for (let i = 0; i < trackHistory.length; i++) {
+    const point = trackHistory[i];
+
+    if (currentSegment.length > 0) {
+      const previousPoint =
+        currentSegment[currentSegment.length - 1];
+
+      const longitudeDifference =
+        Math.abs(point[1] - previousPoint[1]);
+
+      // A longitude jump greater than 180° indicates a
+      // crossing of the antimeridian.
+      if (longitudeDifference > 180) {
+        if (currentSegment.length >= 2) {
+          segments.push(currentSegment);
+        }
+
+        currentSegment = [];
+      }
+    }
+
+    currentSegment.push(point);
+  }
+
+  // Include the final segment.
+  if (currentSegment.length >= 2) {
+    segments.push(currentSegment);
+  }
+
+  // Draw each segment as its own Leaflet polyline.
+  segments.forEach((segment) => {
+    const line = L.polyline(segment, {
+      color: "#38bdf8",
+      weight: 3,
+      opacity: 0.8,
+      lineCap: "round",
+      lineJoin: "round",
+    }).addTo(map);
+
+    trackLines.push(line);
+  });
+}
 
 // Prevent overlapping requests.
 let isFetching = false;
@@ -197,6 +263,17 @@ async function updateISS() {
     // Update the marker's geographical position.
     issMarker.setLatLng([latitude, longitude]);
 
+    
+    // Save this successful reading to the ground-track history.
+    trackHistory.push([latitude, longitude]);
+
+    // Keep only the most recent MAX_TRACK_POINTS readings.
+    if (trackHistory.length > MAX_TRACK_POINTS) {
+      trackHistory.shift();
+    }
+
+    // Redraw the trail using the updated coordinate history.
+    updateGroundTrack();
     
     if (followEnabled) {
         map.panTo([latitude, longitude], {
