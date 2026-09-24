@@ -1,5 +1,5 @@
 
-# ORBIT — Orbital Real-time Beacon & ISS Tracker 🛰️
+# ORBIT: Orbital Real-time Beacon & ISS Tracker 🛰️
 
 > Track the International Space Station in real time, explore its movement around Earth, and visualize its recent orbital path.
 
@@ -82,15 +82,15 @@ The application uses a recent-position history limit to keep the ground-track vi
 
 ## 🛠️ Technology Stack
 
-- **HTML5** — Application structure
-- **CSS3** — Styling and responsive interface
-- **JavaScript** — Application logic and periodic data updates
-- **Vite** — Development server and production build tooling
-- **Leaflet** — Interactive mapping
-- **OpenStreetMap** — Map tiles
-- **Where the ISS at API** — ISS location data
-- **Vercel** — Application deployment
-- **Git & GitHub** — Version control and source-code hosting
+- **HTML5** - Application structure
+- **CSS3** - Styling and responsive interface
+- **JavaScript** - Application logic and periodic data updates
+- **Vite** - Development server and production build tooling
+- **Leaflet** - Interactive mapping
+- **OpenStreetMap** - Map tiles
+- **Where the ISS at API** - ISS location data
+- **Vercel** - Application deployment
+- **Git & GitHub** - Version control and source-code hosting
 
 ---
 
