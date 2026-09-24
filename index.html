@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,111 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Track the International Space Station using live orbital data."
+      content="ORBIT — Orbital Real-time Beacon & ISS Tracker. Follow the International Space Station using live orbital data."
     />
-    <title>ISS Live Tracker</title>
+    <meta name="theme-color" content="#050914" />
+    <title>ORBIT: ISS Live Tracker</title>
   </head>
 
   <body>
-    <header class="header">
-      <div>
-        <p class="eyebrow">REAL-TIME SPACE DATA</p>
-        <h1>ISS Live Tracker</h1>
-        <p class="subtitle">
-          Follow the International Space Station around Earth.
-        </p>
+    <div class="space-backdrop" aria-hidden="true"></div>
+
+    <header class="site-header page-shell">
+      <div class="brand-lockup">
+        <p class="eyebrow"><span class="eyebrow-mark"></span> REAL-TIME SPACE DATA</p>
+        <h1>  O R B I T  <span class="title-period"></span></h1>
+        <p class="subtitle">Orbital Real-time Beacon &amp; ISS Tracker</p>
       </div>
 
-      <div class="status">
+      <div class="status" aria-live="polite">
         <span id="status-dot" class="status-dot"></span>
         <span id="status-text">Connecting...</span>
       </div>
     </header>
 
-    <main>
-      <section class="stats">
-        <article class="stat-card">
-          <p>Latitude</p>
-          <h2 id="latitude">--</h2>
-        </article>
+    <main class="page-shell">
+      <section class="intro-row">
+        <div>
+          <p class="section-kicker">MISSION CONTROL / 001</p>
+          <h2>International Space Station</h2>
+          <p class="intro-copy">Follow humanity's orbital outpost as it travels around Earth.</p>
+        </div>
+        <div class="mission-stamp" aria-label="Live orbital tracking">
+          <span class="stamp-dot"></span>
+          LIVE ORBITAL TRACKING
+        </div>
+      </section>
 
-        <article class="stat-card">
-          <p>Longitude</p>
-          <h2 id="longitude">--</h2>
+      <section class="telemetry-grid" aria-label="Live ISS telemetry">
+        <article class="telemetry-card">
+          <p class="metric-label">Latitude</p>
+          <h3 id="latitude">--</h3>
+          <span class="metric-unit">DEGREES</span>
         </article>
-
-        <article class="stat-card">
-          <p>Altitude</p>
-          <h2 id="altitude">--</h2>
+        <article class="telemetry-card">
+          <p class="metric-label">Longitude</p>
+          <h3 id="longitude">--</h3>
+          <span class="metric-unit">DEGREES</span>
         </article>
-
-        <article class="stat-card">
-          <p>Velocity</p>
-          <h2 id="velocity">--</h2>
+        <article class="telemetry-card">
+          <p class="metric-label">Altitude</p>
+          <h3 id="altitude">--</h3>
+          <span class="metric-unit">ABOVE EARTH</span>
+        </article>
+        <article class="telemetry-card">
+          <p class="metric-label">Velocity</p>
+          <h3 id="velocity">--</h3>
+          <span class="metric-unit">ORBITAL SPEED</span>
         </article>
       </section>
 
-      <section class="map-panel">
-        <div class="map-heading"> <div> <h2>Orbital Position</h2> <p>Map updates approximately every 5 seconds.</p> </div>
+      <section class="map-panel" aria-labelledby="map-title">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">LIVE POSITION / GROUND TRACK</p>
+            <h2 id="map-title">Orbital Position</h2>
+            <p class="panel-copy">Map refreshes approximately every 5 seconds.</p>
+          </div>
 
-    <div class="map-controls"> 
-  <button id="follow-button" class="follow-button active" type="button" aria-pressed="true" > <span id="follow-indicator" class="follow-indicator"></span> <span id="follow-button-text">Following ISS</span> </button>
-   <span id="updated-at">Waiting for data...</span>
-  </div> 
-</div>
+          <div class="map-controls">
+            <button id="follow-button" class="follow-button active" type="button" aria-pressed="true">
+              <span id="follow-indicator" class="follow-indicator"></span>
+              <span id="follow-button-text">Following ISS</span>
+            </button>
+            <span id="updated-at">Waiting for data...</span>
+          </div>
+        </div>
 
-        <div id="map" aria-label="Interactive map showing ISS position"></div>
+        <div class="map-frame">
+          <div id="map" aria-label="Interactive map showing ISS position"></div>
+          <div class="map-caption">EARTH · LIVE TELEMETRY</div>
+        </div>
+      </section>
 
-        
-<section class="stats-panel">
-  <div class="stats-heading">
-    <div>
-      <h2>Orbital Statistics</h2>
-      <p>Live metrics from your recent ISS coordinate history.</p>
-    </div>
-  </div>
+      <section class="stats-panel" aria-labelledby="stats-title">
+        <div class="panel-heading stats-panel-heading">
+          <div>
+            <p class="section-kicker">FLIGHT DATA / HISTORY</p>
+            <h2 id="stats-title">Orbital Statistics</h2>
+            <p class="panel-copy">Live metrics from your recent ISS coordinate history.</p>
+          </div>
+          <div class="stats-actions">
+            <button id="export-csv" class="action-button" type="button">Export CSV</button>
+            <button id="clear-track" class="action-button danger-button" type="button">Clear Track</button>
+          </div>
+        </div>
 
-  <div class="stats-grid">
-    <article class="stat-card">
-      <span class="stat-label">Recorded Positions</span>
-      <strong class="stat-value" id="positions-count">0</strong>
-      <span class="stat-description">Stored coordinate samples</span>
-    </article>
-
-    <article class="stat-card">
-      <span class="stat-label">Trail Duration</span>
-      <strong class="stat-value" id="trail-duration">--</strong>
-      <span class="stat-description">Time covered by the trail</span>
-    </article>
-
-    <article class="stat-card">
-      <span class="stat-label">Last Successful Update</span>
-      <strong class="stat-value" id="last-success">Waiting...</strong>
-      <span class="stat-description">Time since valid telemetry</span>
-    </article>
-
-    <article class="stat-card">
-      <span class="stat-label">Tracking Status</span>
-      <strong class="stat-value" id="tracking-status">Connecting...</strong>
-      <span class="stat-description">API connection state</span>
-    </article>
-  </div>
-</section>
-
-<div class="stats-actions">
-  <button id="export-csv" class="action-button">
-    Export CSV
-  </button>
-
-  <button id="clear-track" class="action-button danger-button">
-    Clear Track
-  </button>
-</div>
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-label">Recorded Positions</span>
+            <strong class="stat-value" id="positions-count">0</strong>
+            <span class="stat-description">Stored coordinate samples</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Trail Duration</span>
+            <strong class="stat-value" id="trail-duration">--</strong>
+            <span class="stat-description">Time covered by the trail</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Last Successful Update</span>
+            <strong class="stat-value" id="last-success">Waiting...</strong>
+            <span class="stat-description">Time since valid telemetry</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Tracking Status</span>
+            <strong class="stat-value" id="tracking-status">Connecting...</strong>
+            <span class="stat-description">API connection state</span>
+          </article>
+        </div>
       </section>
     </main>
 
-    <footer>
-      <p>ISS Live Tracker · Data provided by Where the ISS at?</p>
+    <footer class="site-footer page-shell">
+      <span>ORBIT · Orbital Real-time Beacon &amp; ISS Tracker</span>
+      <span>Data provided by Where the ISS at?</span>
     </footer>
 
     <script type="module" src="/src/main.js"></script>

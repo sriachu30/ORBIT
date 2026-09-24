@@ -105,7 +105,6 @@ const issMarker = L.marker([0, 0], {
 }).addTo(map);
 
 issMarker.bindPopup("International Space Station");
-issMarker.bindPopup("International Space Station");
 
 
 function updateGroundTrack() {
@@ -378,9 +377,6 @@ async function updateISS() {
     issMarker.setLatLng([latitude, longitude]);
 
     
-    // Save this successful reading to the ground-track history.
-    trackHistory.push([latitude, longitude]);
-
     // Record the successful coordinate reading and its timestamp.
     const recordedAt = Date.now();
 
