@@ -1,0 +1,204 @@
+
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #eaf1fb;
+  background: #0b1220;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  padding: 32px;
+}
+
+.header,
+.map-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  color: #7dd3fc;
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 8px 0;
+}
+
+.subtitle,
+.map-heading p {
+  color: #94a3b8;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #172338;
+  padding: 10px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.status-dot.online {
+  background: #34d399;
+}
+
+.status-dot.offline {
+  background: #f87171;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 30px 0;
+}
+
+.stat-card,
+.map-panel {
+  background: #121e30;
+  border: 1px solid #26364c;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.stat-card p {
+  color: #94a3b8;
+  margin: 0 0 12px;
+}
+
+.stat-card h2 {
+  font-size: clamp(18px, 2vw, 25px);
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+.map-heading {
+  margin-bottom: 18px;
+}
+
+.map-heading h2 {
+  margin: 0;
+}
+
+.map-heading p {
+  margin-bottom: 0;
+}
+
+#updated-at {
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: right;
+}
+
+#map {
+  width: 100%;
+  height: 65vh;
+  min-height: 350px;
+  border-radius: 12px;
+  background: #172338;
+}
+
+footer {
+  padding-top: 22px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+@media (max-width: 800px) {
+  body {
+    padding: 18px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .header,
+  .map-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  #updated-at {
+    text-align: left;
+  }
+}
+
+
+/* Custom ISS marker */
+
+.iss-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.iss-marker {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iss-marker-glow {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.22);
+  animation: iss-pulse 2s ease-out infinite;
+}
+
+.iss-satellite {
+  position: relative;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.9));
+}
+
+.iss-marker-core {
+  position: absolute;
+  z-index: 2;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #38bdf8;
+  box-sizing: content-box;
+}
+
+@keyframes iss-pulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
