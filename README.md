@@ -80,7 +80,7 @@ The application uses a recent-position history limit to keep the ground-track vi
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **HTML5** - Application structure
 - **CSS3** - Styling and responsive interface
@@ -174,15 +174,15 @@ The production build is generated in the `dist` directory.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
-**Sri Achyuta
+**Sri Achyuta**
 
 GitHub: [@sriachu30](https://github.com/sriachu30)
 
 ---
 
-## 📜 Disclaimer
+## Disclaimer
 
 ORBIT is an educational and informational project created to visualize ISS location data. It is not affiliated with NASA, the ISS program, or the API provider. Location information and visualizations may be subject to data-source delays, outages, or inaccuracies.
 
