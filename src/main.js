@@ -217,6 +217,58 @@ function updateOrbitalStatistics() {
     formatTimeSince(lastSuccessfulUpdate);
 }
 
+function clearTrackHistory() {
+  trackHistory.length = 0;
+  trackTimestamps.length = 0;
+
+  updateGroundTrack();
+  updateOrbitalStatistics();
+
+  setStatus("Live");
+}
+
+function exportTrackCSV() {
+  if (trackHistory.length === 0) {
+    alert("No track history available to export.");
+    return;
+  }
+
+  const rows = [
+    ["Timestamp (UTC)", "Latitude", "Longitude"]
+  ];
+
+  for (let i = 0; i < trackHistory.length; i++) {
+    const [latitude, longitude] = trackHistory[i];
+    const timestamp = new Date(trackTimestamps[i]).toISOString();
+
+    rows.push([
+      timestamp,
+      latitude,
+      longitude
+    ]);
+  }
+
+  const csvContent = rows
+    .map(row => row.join(","))
+    .join("\n");
+
+  const blob = new Blob([csvContent], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "iss-track-history.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+}
+
 // Prevent overlapping requests.
 let isFetching = false;
 
@@ -235,6 +287,8 @@ const elements = {
   trailDuration: document.getElementById("trail-duration"),
   lastSuccess: document.getElementById("last-success"),
   trackingStatus: document.getElementById("tracking-status"),
+  exportCsvButton: document.getElementById("export-csv"),
+  clearTrackButton: document.getElementById("clear-track"),
 };
 
 let followEnabled = true;
@@ -378,6 +432,15 @@ async function updateISS() {
   }
 }
 
+elements.clearTrackButton.addEventListener(
+  "click",
+  clearTrackHistory
+);
+
+elements.exportCsvButton.addEventListener(
+  "click",
+  exportTrackCSV
+);
 
  // Fetch once immediately, then poll periodically.
 updateISS();
