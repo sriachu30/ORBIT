@@ -188,4 +188,4 @@ ORBIT is an educational and informational project created to visualize ISS locat
 
 ---
 
-**Look up. Track the orbit. Explore space.** 🛰️🌍
+**Look up. Track the orbit. Explore space.** 🌍
